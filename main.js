@@ -1,17 +1,23 @@
 const electron = require('electron');
 
-function createWindow() {
-  // Create the browser window.
+electron.app.whenReady().then(() => {
   let win = new electron.BrowserWindow({
     width: 800,
     height: 600,
+    alwaysOnTop: true,
+    frame: false,
     webPreferences: {
       nodeIntegration: true
     },
   });
 
-  // and load the index.html of the app.
-  win.loadFile('index.html');
-};
+  electron.ipcMain.on('moved', (e, x, y) => {
+    const [x1, y1] = win.getPosition();
+    win.setPosition(x1 + x, y1 + y);
+  });
 
-electron.app.whenReady().then(createWindow);
+  win.webContents.toggleDevTools();
+
+  win.setMenu(null);
+  win.loadFile('index.html');
+});
