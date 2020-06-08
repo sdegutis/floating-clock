@@ -54,7 +54,7 @@ document.onmouseup = (e) => {
   document.onmousemove = null;
 };
 
-let seconds = true;
+let seconds = false;
 
 clock.ondblclick = () => {
   seconds = !seconds;

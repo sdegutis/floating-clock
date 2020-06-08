@@ -3,11 +3,12 @@ const path = require('path');
 
 electron.app.whenReady().then(() => {
   let win = new electron.BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 171,
+    height: 97,
     alwaysOnTop: true,
-    backgroundColor: '#111',
+    backgroundColor: '#0a0a0a',
     frame: false,
+    resizable: false,
     webPreferences: {
       // preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
@@ -25,7 +26,7 @@ electron.app.whenReady().then(() => {
     const rect = win.getBounds();
 
     const newWidth = Math.round(size.width * 1.5);
-    const newHeight = Math.round(size.height * 2.0);
+    const newHeight = Math.round(size.height * 2.25);
 
     const offsetX = Math.round((rect.width - newWidth) / 2);
     const offsetY = Math.round((rect.height - newHeight) / 2);
@@ -42,7 +43,7 @@ electron.app.whenReady().then(() => {
     win.webContents.send('color', electron.systemPreferences.getAccentColor());
   });
 
-  win.webContents.toggleDevTools();
+  // win.webContents.toggleDevTools();
 
   win.setMenu(null);
   win.loadFile('index.html');
