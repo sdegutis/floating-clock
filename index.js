@@ -1,7 +1,7 @@
+const ipc = require('electron').ipcRenderer;
+
 const clock = document.getElementById('clock');
 const closeButton = document.getElementById('closeButton');
-
-const ipc = require('electron').ipcRenderer;
 
 closeButton.onclick = () => window.close();
 
@@ -11,13 +11,21 @@ ipc.on('color', (e, color) => {
   document.documentElement.append(style);
 });
 
-let size = 12;
-const fixClockSize = () => clock.style.fontSize = size + 'pt';
-fixClockSize();
+let size = 24;
+const fixClockSize = () => {
+  clock.style.fontSize = size + 'pt';
+  const rect = clock.getBoundingClientRect();
+  ipc.send('resized', {
+    width: rect.width,
+    height: rect.height,
+  });
+};
+setTimeout(() => {
+  fixClockSize();
+}, 0);
 
 /**@type{any}*/(document).onmousewheel = (e) => {
   const by = (e.deltaY > 0 ? -1 : 1) * 2;
-  ipc.send('resized', by);
   size += by;
   fixClockSize();
 };
@@ -46,8 +54,16 @@ document.onmouseup = (e) => {
   document.onmousemove = null;
 };
 
+let seconds = true;
+
+clock.ondblclick = () => {
+  seconds = !seconds;
+  refreshClock();
+  fixClockSize();
+};
+
 function refreshClock() {
-  clock.innerText = new Date().toLocaleTimeString();
+  clock.innerText = new Date().toLocaleTimeString([], { timeStyle: seconds ? 'medium' : 'short' });
 }
 
 refreshClock();
