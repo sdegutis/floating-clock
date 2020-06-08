@@ -5,12 +5,21 @@ const ipc = require('electron').ipcRenderer;
 
 closeButton.onclick = () => window.close();
 
+ipc.on('color', (e, color) => {
+  console.log('got color', color);
+
+  const style = document.createElement('style');
+  style.innerHTML = `button:hover { background: #${color} }`;
+  document.documentElement.append(style);
+});
+
 document.onmousedown = (e) => {
+  if (e.target === closeButton) return;
+  e.preventDefault();
+
   document.onmousemove = (e) => {
-
+    e.preventDefault();
     ipc.send('moved', e.movementX, e.movementY);
-
-    // console.log('mousemove', e.movementX, e.movementY);
   };
 };
 

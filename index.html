@@ -1,3 +1,35 @@
+<style>
+  * { margin:0; padding:0; box-sizing: border-box; }
+  body {
+    background: #111;
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-items: center;
+    
+  }
+  button {
+    position: fixed;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+  }
+  button#closeButton:active {
+    background: #888;
+  }
+  #clock {
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+    font-size: 32px;
+  }
+</style>
 <div id="clock"></div>
-<button id="closeButton"></button>
+<button id="closeButton">&#x2715;</button>
 <script src="index.js"></script>
