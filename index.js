@@ -6,12 +6,21 @@ const ipc = require('electron').ipcRenderer;
 closeButton.onclick = () => window.close();
 
 ipc.on('color', (e, color) => {
-  console.log('got color', color);
-
   const style = document.createElement('style');
   style.innerHTML = `button:hover { background: #${color} }`;
   document.documentElement.append(style);
 });
+
+let size = 12;
+const fixClockSize = () => clock.style.fontSize = size + 'pt';
+fixClockSize();
+
+/**@type{any}*/(document).onmousewheel = (e) => {
+  const by = (e.deltaY > 0 ? -1 : 1) * 2;
+  ipc.send('resized', by);
+  size += by;
+  fixClockSize();
+};
 
 document.onmousedown = (e) => {
   if (e.target === closeButton) return;

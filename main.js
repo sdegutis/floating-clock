@@ -19,6 +19,11 @@ electron.app.whenReady().then(() => {
     win.setPosition(x1 + x, y1 + y);
   });
 
+  electron.ipcMain.on('resized', (e, size) => {
+    // const [x1, y1] = win.getPosition();
+    // win.setPosition(x1 + x, y1 + y);
+  });
+
   win.webContents.on('did-finish-load', () => {
     win.webContents.send('color', electron.systemPreferences.getAccentColor());
   });
