@@ -23,6 +23,16 @@ document.onmousedown = (e) => {
   };
 };
 
+window.onblur = () => {
+  closeButton.hidden = true;
+};
+
+window.onfocus = () => {
+  setTimeout(() => {
+    closeButton.hidden = false;
+  }, 0);
+};
+
 document.onmouseup = (e) => {
   document.onmousemove = null;
 };
