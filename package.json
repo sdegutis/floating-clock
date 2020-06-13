@@ -11,6 +11,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "build": {
+    "productName": "Floating Clock 2.0",
+    "icon": "app.ico"
+  },
   "devDependencies": {
     "electron": "^9.0.2",
     "electron-builder": "^22.7.0"
