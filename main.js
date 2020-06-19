@@ -8,14 +8,20 @@ electron.app.whenReady().then(() => {
     backgroundColor: '#0a0a0a',
     frame: false,
     resizable: false,
+    show: false,
   });
 
   // win.webContents.toggleDevTools();
 
   win.setMenu(null);
+
   win.loadFile('index.html', {
     query: {
       'color': electron.systemPreferences.getAccentColor(),
     },
+  });
+
+  win.once('ready-to-show', () => {
+    win.show();
   });
 });
