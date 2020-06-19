@@ -15,8 +15,6 @@ fixClockSize();
 
 // Close button
 
-closeButton.hidden = true;
-
 closeButton.onclick = () => window.close();
 
 window.onblur = () => {
