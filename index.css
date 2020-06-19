@@ -13,6 +13,22 @@ body {
   justify-items: center;
   border: 1px solid #234;
   overflow: hidden;
+  animation: rainbow 60s infinite;
+}
+
+/* prettier-ignore */
+@keyframes rainbow {
+  0%   { background: #0a0c0f; }
+  10%  { background: #0c0a0f; }
+  20%  { background: #0f0a0e; }
+  30%  { background: #0f0a0b; }
+  40%  { background: #0f0c0a; }
+  50%  { background: #0e0f0a; }
+  60%  { background: #0b0f0a; }
+  70%  { background: #0a0f0c; }
+  80%  { background: #0a0f0e; }
+  90%  { background: #0a0e0f; }
+  100% { background: #0a0c0f; }
 }
 
 button {

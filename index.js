@@ -92,6 +92,7 @@ clock.ondblclick = () => {
 };
 
 function refreshClock() {
-  clock.innerText = new Date().toLocaleTimeString([], { timeStyle: seconds ? 'medium' : 'short' });
+  const newTime = new Date().toLocaleTimeString([], { timeStyle: seconds ? 'medium' : 'short' });
+  if (clock.innerText !== newTime) clock.innerText = newTime;
   fixClockSize();
 }
