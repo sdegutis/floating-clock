@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "build": {
-    "productName": "Floating Clock 2.0",
+    "productName": "Floating Clock",
     "icon": "app.ico"
   },
   "devDependencies": {
