@@ -39,12 +39,12 @@ electron.app.whenReady().then(() => {
     win.setBounds(rect);
   });
 
-  win.webContents.on('did-finish-load', () => {
-    win.webContents.send('color', electron.systemPreferences.getAccentColor());
-  });
-
   // win.webContents.toggleDevTools();
 
   win.setMenu(null);
-  win.loadFile('index.html');
+  win.loadFile('index.html', {
+    query: {
+      'color': electron.systemPreferences.getAccentColor(),
+    },
+  });
 });

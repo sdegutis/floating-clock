@@ -5,11 +5,10 @@ const closeButton = document.getElementById('closeButton');
 
 closeButton.onclick = () => window.close();
 
-ipc.on('color', (e, color) => {
-  const style = document.createElement('style');
-  style.innerHTML = `button:hover { background: #${color} }`;
-  document.documentElement.append(style);
-});
+const color = new URLSearchParams(location.search).get('color');
+const style = document.createElement('style');
+style.innerHTML = `button:hover { background: #${color} }`;
+document.documentElement.append(style);
 
 let size = 24;
 const fixClockSize = () => {
