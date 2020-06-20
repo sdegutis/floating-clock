@@ -5,9 +5,7 @@ const [input] = document.getElementsByTagName('input');
 
 // Setup state
 
-let showSeconds = false;
-let showDay = false;
-let customFormat = null;
+let customFormat = input.value = 'dddd[\\n]MMMM Do[\\n]h:mm:ss A';
 let size = 24;
 
 setupWindowsButtonColor();
@@ -90,17 +88,7 @@ function fixClockSize() {
 document.onkeydown = (e) => {
   if (document.activeElement === input) return;
 
-  if (e.key === 's') {
-    e.preventDefault();
-    showSeconds = !showSeconds;
-    refreshClock();
-  }
-  else if (e.key === 'd') {
-    e.preventDefault();
-    showDay = !showDay;
-    refreshClock();
-  }
-  else if (e.key === 'c') {
+  if (e.key === 'c') {
     e.preventDefault();
     document.body.classList.toggle('color');
     refreshClock();
@@ -114,18 +102,7 @@ document.onkeydown = (e) => {
 };
 
 function refreshClock() {
-  let newTime;
-  if (customFormat) {
-    newTime = moment().format(customFormat.replace(/\\n/g, '\n'));
-  }
-  else {
-    newTime = new Date().toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: showSeconds ? 'numeric' : undefined,
-      weekday: showDay ? 'long' : undefined,
-    });
-  }
+  const newTime = moment().format(customFormat.replace(/\\n/g, '\n'));
   if (clock.innerText !== newTime) clock.innerText = newTime;
 
   fixClockSize();
