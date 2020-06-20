@@ -5,7 +5,8 @@ const [input] = document.getElementsByTagName('input');
 
 // Setup state
 
-let customFormat = input.value = 'dddd[\\n]MMMM Do[\\n]h:mm:ss A';
+input.value = 'dddd[\\n]MMMM Do[\\n]h:mm:ss A';
+let lastCustomFormat;
 let size = 24;
 
 setupWindowsButtonColor();
@@ -85,48 +86,45 @@ function fixClockSize() {
 
 // Display
 
-// let formatDocsWin;
-
 document.onkeydown = (e) => {
-  if (document.activeElement === input) return;
-
-  if (e.key === 'c') {
-    e.preventDefault();
-    document.body.classList.toggle('color');
-    refreshClock();
+  if (document.activeElement !== input) {
+    if (e.key === 'c') {
+      e.preventDefault();
+      document.body.classList.toggle('color');
+      refreshClock();
+    }
   }
-  else if (e.key === 'q') {
-    e.preventDefault();
 
-    input.hidden = false;
-    input.focus();
-
-    // formatDocsWin = window.open('help.html', '_blank', 'resizable=yes,menubar=yes,status=yes,modal');
-
-    // window.focus();
-    // formatDocsWin.blur();
+  if (input.hidden) {
+    if (e.keyCode === 27) {
+      // Show with Esc
+      lastCustomFormat = input.value;
+      input.hidden = false;
+      input.focus();
+    }
+  }
+  else {
+    if (e.keyCode === 27) {
+      // Cancel with Esc
+      input.hidden = true;
+      input.value = lastCustomFormat;
+      refreshClock();
+    }
+    else if (e.keyCode === 13) {
+      // Commit with Enter
+      e.preventDefault();
+      input.hidden = true;
+    }
   }
 };
 
 function refreshClock() {
-  const newTime = moment().format(customFormat.replace(/\\n/g, '\n'));
+  const newTime = moment().format(input.value.replace(/\\n/g, '\n'));
   if (clock.innerText !== newTime) clock.innerText = newTime;
 
   fixClockSize();
 }
 
-// Custom format
-
-input.onkeydown = (e) => {
-  if (e.keyCode === 13) {
-    customFormat = input.value ? input.value : null;
-    input.hidden = true;
-    // formatDocsWin.close();
-    refreshClock();
-  }
-  else if (e.keyCode === 27) {
-    input.value = customFormat;
-    input.hidden = true;
-    // formatDocsWin.close();
-  }
+input.oninput = () => {
+  refreshClock();
 };
