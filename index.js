@@ -1,11 +1,13 @@
 const [clock] = document.getElementsByTagName('div');
 const [closeButton] = document.getElementsByTagName('button');
+const [input] = document.getElementsByTagName('input');
 
 
 // Setup state
 
 let showSeconds = false;
 let showDay = false;
+let customFormat = null;
 let size = 24;
 
 setupWindowsButtonColor();
@@ -40,7 +42,7 @@ function setupWindowsButtonColor() {
 // Drag to move
 
 document.onmousedown = (e) => {
-  if (e.target === closeButton) return;
+  if (e.target === closeButton || e.target === input) return;
   e.preventDefault();
 
   document.onmousemove = (e) => {
@@ -86,6 +88,8 @@ function fixClockSize() {
 // Display
 
 document.onkeydown = (e) => {
+  if (document.activeElement === input) return;
+
   if (e.key === 's') {
     e.preventDefault();
     showSeconds = !showSeconds;
@@ -101,15 +105,42 @@ document.onkeydown = (e) => {
     document.body.classList.toggle('color');
     refreshClock();
   }
+  else if (e.key === 'q') {
+    e.preventDefault();
+
+    input.hidden = false;
+    input.focus();
+  }
 };
 
 function refreshClock() {
-  const newTime = new Date().toLocaleTimeString([], {
-    hour: 'numeric',
-    minute: 'numeric',
-    second: showSeconds ? 'numeric' : undefined,
-    weekday: showDay ? 'long' : undefined,
-  });
+  let newTime;
+  if (customFormat) {
+    newTime = moment().format(customFormat.replace(/\\n/g, '\n'));
+  }
+  else {
+    newTime = new Date().toLocaleTimeString([], {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: showSeconds ? 'numeric' : undefined,
+      weekday: showDay ? 'long' : undefined,
+    });
+  }
   if (clock.innerText !== newTime) clock.innerText = newTime;
+
   fixClockSize();
 }
+
+// Custom format
+
+input.onkeydown = (e) => {
+  if (e.keyCode === 13) {
+    customFormat = input.value ? input.value : null;
+    input.hidden = true;
+    refreshClock();
+  }
+  else if (e.keyCode === 27) {
+    input.value = customFormat;
+    input.hidden = true;
+  }
+};

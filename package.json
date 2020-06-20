@@ -18,5 +18,8 @@
   "devDependencies": {
     "electron": "^9.0.2",
     "electron-builder": "^22.7.0"
+  },
+  "dependencies": {
+    "moment": "^2.27.0"
   }
 }
