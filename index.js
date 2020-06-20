@@ -5,7 +5,7 @@ const [input] = document.getElementsByTagName('input');
 
 // Setup state
 
-input.value = 'dddd[\\n]MMMM Do[\\n]h:mm:ss A';
+input.value = localStorage.getItem('format') ?? 'dddd[\\n]MMMM Do[\\n]h:mm:ss A';
 let lastCustomFormat;
 let size = 24;
 
@@ -126,5 +126,6 @@ function refreshClock() {
 }
 
 input.oninput = () => {
+  localStorage.setItem('format', input.value);
   refreshClock();
 };
