@@ -4,7 +4,8 @@ const [closeButton] = document.getElementsByTagName('button');
 
 // Setup state
 
-let seconds = false;
+let showSeconds = false;
+let showDay = false;
 let size = 24;
 
 setupWindowsButtonColor();
@@ -84,13 +85,21 @@ function fixClockSize() {
 
 // Display
 
-clock.ondblclick = () => {
-  seconds = !seconds;
-  refreshClock();
+document.onkeydown = (e) => {
+  if (e.key === 's') {
+    e.preventDefault();
+    showSeconds = !showSeconds;
+    refreshClock();
+  }
+  else if (e.key === 'd') {
+    e.preventDefault();
+    showDay = !showDay;
+    refreshClock();
+  }
 };
 
 function refreshClock() {
-  const newTime = new Date().toLocaleTimeString([], { timeStyle: seconds ? 'medium' : 'short' });
+  const newTime = new Date().toLocaleTimeString([], { timeStyle: showSeconds ? 'medium' : 'short' });
   if (clock.innerText !== newTime) clock.innerText = newTime;
   fixClockSize();
 }
