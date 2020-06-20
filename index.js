@@ -96,6 +96,11 @@ document.onkeydown = (e) => {
     showDay = !showDay;
     refreshClock();
   }
+  else if (e.key === 'c') {
+    e.preventDefault();
+    document.body.classList.toggle('color');
+    refreshClock();
+  }
 };
 
 function refreshClock() {
