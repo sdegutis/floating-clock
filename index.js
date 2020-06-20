@@ -99,7 +99,12 @@ document.onkeydown = (e) => {
 };
 
 function refreshClock() {
-  const newTime = new Date().toLocaleTimeString([], { timeStyle: showSeconds ? 'medium' : 'short' });
+  const newTime = new Date().toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: showSeconds ? 'numeric' : undefined,
+    weekday: showDay ? 'long' : undefined,
+  });
   if (clock.innerText !== newTime) clock.innerText = newTime;
   fixClockSize();
 }
