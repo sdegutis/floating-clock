@@ -85,7 +85,7 @@ function fixClockSize() {
 
 // Display
 
-let formatDocsWin;
+// let formatDocsWin;
 
 document.onkeydown = (e) => {
   if (document.activeElement === input) return;
@@ -99,11 +99,12 @@ document.onkeydown = (e) => {
     e.preventDefault();
 
     input.hidden = false;
-    formatDocsWin = window.open('help.html', '_blank', 'resizable=yes,menubar=yes,status=yes,modal');
-
-    window.focus();
-    formatDocsWin.blur();
     input.focus();
+
+    // formatDocsWin = window.open('help.html', '_blank', 'resizable=yes,menubar=yes,status=yes,modal');
+
+    // window.focus();
+    // formatDocsWin.blur();
   }
 };
 
@@ -120,13 +121,12 @@ input.onkeydown = (e) => {
   if (e.keyCode === 13) {
     customFormat = input.value ? input.value : null;
     input.hidden = true;
-    formatDocsWin.close();
+    // formatDocsWin.close();
     refreshClock();
   }
   else if (e.keyCode === 27) {
     input.value = customFormat;
     input.hidden = true;
-    formatDocsWin.close();
+    // formatDocsWin.close();
   }
 };
-4
