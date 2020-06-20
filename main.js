@@ -11,7 +11,7 @@ electron.app.whenReady().then(() => {
     show: false,
   });
 
-  win.webContents.toggleDevTools();
+  // win.webContents.toggleDevTools();
 
   win.setMenu(null);
 
