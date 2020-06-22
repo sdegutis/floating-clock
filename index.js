@@ -7,7 +7,6 @@ const [input] = document.getElementsByTagName('input');
 
 input.value = localStorage.getItem('format') ?? '[dddd]\\n[MMMM Do]\\n[h:mm:ss A]';
 let format;
-let lastCustomFormat;
 reformat();
 
 let size = 24;
@@ -98,25 +97,15 @@ document.onkeydown = (e) => {
     }
   }
 
-  if (input.hidden) {
-    if (e.keyCode === 27) {
-      // Show with Esc
-      lastCustomFormat = input.value;
+  if (e.keyCode === 27) {
+    // Escape hides/shows the format field
+    if (input.hidden) {
       input.hidden = false;
       input.focus();
     }
-  }
-  else {
-    if (e.keyCode === 27) {
-      // Cancel with Esc
+    else {
       input.hidden = true;
-      input.value = lastCustomFormat;
       refreshClock();
-    }
-    else if (e.keyCode === 13) {
-      // Commit with Enter
-      e.preventDefault();
-      input.hidden = true;
     }
   }
 };
