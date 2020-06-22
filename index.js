@@ -5,8 +5,11 @@ const [input] = document.getElementsByTagName('input');
 
 // Setup state
 
-input.value = localStorage.getItem('format') ?? 'dddd[\\n]MMMM Do[\\n]h:mm:ss A';
+input.value = localStorage.getItem('format') ?? '[dddd]\\n[MMMM Do]\\n[h:mm:ss A]';
+let format;
 let lastCustomFormat;
+reformat();
+
 let size = 24;
 
 setupWindowsButtonColor();
@@ -119,13 +122,18 @@ document.onkeydown = (e) => {
 };
 
 function refreshClock() {
-  const newTime = moment().format(input.value.replace(/\\n/g, '\n'));
+  const newTime = moment().format(format);
   if (clock.innerText !== newTime) clock.innerText = newTime;
 
   fixClockSize();
 }
 
+function reformat() {
+  format = input.value.split(/[\[\]]/).map((item, i) => (i % 2 === 1) ? item : item === '' ? '' : `[${item}]`).join('').replace(/\\n/g, '\n');
+}
+
 input.oninput = () => {
   localStorage.setItem('format', input.value);
+  reformat();
   refreshClock();
 };
