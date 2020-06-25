@@ -7,11 +7,8 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: #0a0c0f;
-  display: grid;
   width: 100vw;
   height: 100vh;
-  align-items: center;
-  justify-items: center;
   border: 1px solid #234;
   overflow: hidden;
 }
@@ -37,6 +34,7 @@ body.color {
 
 button {
   position: fixed;
+  top: 0;
   right: 0;
   width: 30px;
   height: 30px;
@@ -52,6 +50,7 @@ button#closeButton:active {
 }
 
 #clock {
+  display: inline-block;
   padding: 0.75em 1em;
   color: white;
   user-select: none;
