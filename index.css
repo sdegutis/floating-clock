@@ -84,3 +84,9 @@ td,
 th {
   border: 1px solid #ccc;
 }
+
+.rainbow-text {
+  background-image: linear-gradient(to left, violet, #90f, #49f, green, yellow, orange, red);
+  -webkit-background-clip: text;
+  color: transparent;
+}

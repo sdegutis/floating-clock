@@ -6,7 +6,8 @@ const [input] = document.getElementsByTagName('input');
 // Setup state
 
 input.value = localStorage.getItem('format') ?? '[dddd]\\n[MMMM Do]\\n[h:mm:ss A]';
-let format;
+let oldText;
+let formatter;
 reformat();
 
 let size = 24;
@@ -111,14 +112,30 @@ document.onkeydown = (e) => {
 };
 
 function refreshClock() {
-  const newTime = moment().format(format);
-  if (clock.innerText !== newTime) clock.innerText = newTime;
+  const newTime = formatter();
+  if (oldText !== newTime) {
+    oldText = newTime;
+    clock.innerHTML = newTime;
+
+    // for (const el of clock.getElementsByTagName('span')) {
+    //   el.style.color = el.dataset['color'];
+    // }
+  }
 
   fixClockSize();
 }
 
 function reformat() {
-  format = input.value.split(/[\[\]]/).map((item, i) => (i % 2 === 1) ? item : item === '' ? '' : `[${item}]`).join('').replace(/\\n/g, '\n');
+  const str = input.value;
+  let format = str.split(/[\[\]]/).map((item, i) => (i % 2 === 1) ? item : item === '' ? '' : `[${item}]`).join('').replace(/\\n/g, '\n');
+
+  format = format.replace('Happy Birthday, David!', '<span class="rainbow-text">$&</span>');
+  format = format.replace(/\n/g, '<br>');
+
+  formatter = () => {
+    return moment().format(format);
+  };
+
 }
 
 input.oninput = () => {
