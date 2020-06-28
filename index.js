@@ -157,7 +157,7 @@ function reformat() {
   const str = input.value;
   let format = str.split(/[\[\]]/).map((item, i) => (i % 2 === 1) ? item : item === '' ? '' : `[${item}]`).join('').replace(/\\n/g, '\n');
 
-  format = format.replace('Happy Birthday, David!', '<span class="rainbow-text">$&</span>');
+  // format = format.replace('Happy Birthday, David!', '<span class="rainbow-text">$&</span>');
   format = format.replace(/\n/g, '<br>');
 
   formatter = () => {

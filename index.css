@@ -91,6 +91,6 @@ th {
 
 .rainbow-text {
   background-image: linear-gradient(to left, violet, #90f, #49f, green, yellow, orange, red);
-  background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
 }
