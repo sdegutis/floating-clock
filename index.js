@@ -1,7 +1,9 @@
-const [clock] = document.getElementsByTagName('div');
+const clock = document.getElementById('clock');
 const [closeButton] = document.getElementsByTagName('button');
 const [input] = document.getElementsByTagName('input');
 const helpBox = document.getElementById('help');
+const container = document.getElementById('container');
+const extras = document.getElementById('extras');
 
 
 // Setup state
@@ -77,7 +79,7 @@ document.onmousewheel = (e) => {
 
 // Auto sizing
 
-function fixClockSize() {
+function fixClockSize(skipMoveWindow) {
   if (!oldRect) {
     oldRect = clock.getBoundingClientRect();
     window.resizeTo(oldRect.width + 2, oldRect.height + 2);
@@ -93,18 +95,15 @@ function fixClockSize() {
   const diffX = newWidth - oldRect.width;
   const diffY = newHeight - oldRect.height;
 
-  window.resizeBy(diffX, diffY);
-  window.moveBy(-diffX / 2, -diffY / 2);
+  window.resizeTo(clock.clientWidth + 2, container.clientHeight + 2);
+  if (!skipMoveWindow) {
+    window.moveBy(-diffX / 2, -diffY / 2);
+  }
 
   oldRect = {
     width: newWidth,
     height: newHeight,
   };
-
-  if (!helpBox.hidden) {
-    const { bottom } = input.getBoundingClientRect();
-    helpBox.style.height = (document.body.clientHeight - bottom) + 'px';
-  }
 }
 
 
@@ -121,19 +120,16 @@ document.onkeydown = (e) => {
 
   if (e.keyCode === 27) {
     // Escape hides/shows the format field
-    if (input.hidden) {
-      input.hidden = false;
-      helpBox.hidden = false;
+    if (extras.hidden) {
+      extras.hidden = false;
       input.focus();
 
-      window.resizeBy(0, 200);
-      fixClockSize();
+      fixClockSize(true);
     }
     else {
-      input.hidden = true;
-      helpBox.hidden = true;
+      extras.hidden = true;
 
-      window.resizeBy(0, -200);
+      fixClockSize(true);
       refreshClock();
     }
   }
