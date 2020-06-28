@@ -8,6 +8,7 @@ const [input] = document.getElementsByTagName('input');
 input.value = localStorage.getItem('format') ?? '[dddd]\\n[MMMM Do]\\n[h:mm:ss A]';
 let oldText;
 let formatter;
+let oldRect;
 reformat();
 
 let size = 24;
@@ -15,7 +16,8 @@ let size = 24;
 setupWindowsButtonColor();
 refreshClock();
 setInterval(refreshClock, 1000);
-fixClockSize();
+
+
 
 
 // Close button
@@ -73,17 +75,28 @@ document.onmousewheel = (e) => {
 // Auto sizing
 
 function fixClockSize() {
+  if (!oldRect) {
+    oldRect = clock.getBoundingClientRect();
+    window.resizeTo(oldRect.width + 2, oldRect.height + 2);
+    return;
+  }
+
   clock.style.fontSize = size + 'pt';
   const rect = clock.getBoundingClientRect();
 
-  const newWidth = Math.max(100, rect.width + 2);
-  const newHeight = Math.max(100, rect.height + 2);
+  const newWidth = Math.max(100, rect.width);
+  const newHeight = Math.max(100, rect.height);
 
-  const diffX = window.innerWidth - newWidth;
-  const diffY = window.innerHeight - newHeight;
+  const diffX = newWidth - oldRect.width;
+  const diffY = newHeight - oldRect.height;
 
-  window.resizeTo(newWidth, newHeight);
-  window.moveBy(diffX / 2, diffY / 2);
+  window.resizeBy(diffX, diffY);
+  window.moveBy(-diffX / 2, -diffY / 2);
+
+  oldRect = {
+    width: newWidth,
+    height: newHeight,
+  };
 }
 
 
@@ -103,9 +116,14 @@ document.onkeydown = (e) => {
     if (input.hidden) {
       input.hidden = false;
       input.focus();
+
+      window.resizeBy(0, 200);
+      fixClockSize();
     }
     else {
       input.hidden = true;
+
+      window.resizeBy(0, -200);
       refreshClock();
     }
   }
