@@ -58,7 +58,7 @@ button#closeButton:active {
   white-space: nowrap;
 }
 
-input {
+textarea {
   width: calc(100% - 10px);
   margin-bottom: 5px;
   margin-left: 5px;
@@ -69,6 +69,8 @@ input {
   background: #000;
   color: #fff;
   padding: 5px;
+
+  overflow: hidden;
 }
 
 #help {

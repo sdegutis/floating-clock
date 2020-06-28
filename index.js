@@ -1,6 +1,6 @@
 const clock = document.getElementById('clock');
 const [closeButton] = document.getElementsByTagName('button');
-const [input] = document.getElementsByTagName('input');
+const [input] = document.getElementsByTagName('textarea');
 const helpBox = document.getElementById('help');
 const container = document.getElementById('container');
 const extras = document.getElementById('extras');
@@ -9,6 +9,7 @@ const extras = document.getElementById('extras');
 // Setup state
 
 input.value = localStorage.getItem('format') ?? '[dddd]\\n[MMMM Do]\\n[h:mm:ss A]';
+
 let oldText;
 let formatter;
 let oldRect;
@@ -123,7 +124,7 @@ document.onkeydown = (e) => {
     if (extras.hidden) {
       extras.hidden = false;
       input.focus();
-
+      fixTextareaSize();
       fixClockSize(true);
     }
     else {
@@ -164,6 +165,12 @@ function reformat() {
 
 input.oninput = () => {
   localStorage.setItem('format', input.value);
+  fixTextareaSize();
   reformat();
   refreshClock();
 };
+
+function fixTextareaSize() {
+  input.style.height = '5px';
+  input.style.height = input.scrollHeight + 'px';
+}
