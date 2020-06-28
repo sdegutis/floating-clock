@@ -1,6 +1,7 @@
 const [clock] = document.getElementsByTagName('div');
 const [closeButton] = document.getElementsByTagName('button');
 const [input] = document.getElementsByTagName('input');
+const helpBox = document.getElementById('help');
 
 
 // Setup state
@@ -65,10 +66,12 @@ document.onmousedown = (e) => {
 // Scroll to resize
 
 document.onmousewheel = (e) => {
-  const by = (e.deltaY > 0 ? -1 : 1) * 2;
-  size += by;
-  size = Math.max(size, 11);
-  fixClockSize();
+  if (e.target === clock) {
+    const by = (e.deltaY > 0 ? -1 : 1) * 2;
+    size += by;
+    size = Math.max(size, 11);
+    fixClockSize();
+  }
 };
 
 
@@ -97,6 +100,11 @@ function fixClockSize() {
     width: newWidth,
     height: newHeight,
   };
+
+  if (!helpBox.hidden) {
+    const { bottom } = input.getBoundingClientRect();
+    helpBox.style.height = (document.body.clientHeight - bottom) + 'px';
+  }
 }
 
 
@@ -115,6 +123,7 @@ document.onkeydown = (e) => {
     // Escape hides/shows the format field
     if (input.hidden) {
       input.hidden = false;
+      helpBox.hidden = false;
       input.focus();
 
       window.resizeBy(0, 200);
@@ -122,6 +131,7 @@ document.onkeydown = (e) => {
     }
     else {
       input.hidden = true;
+      helpBox.hidden = true;
 
       window.resizeBy(0, -200);
       refreshClock();
