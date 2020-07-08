@@ -8,7 +8,7 @@ const extras = document.getElementById('extras');
 
 // Setup state
 
-input.value = localStorage.getItem('format') ?? '[dddd]\\n[MMMM Do]\\n[h:mm:ss A]';
+input.value = localStorage.getItem('format') ?? '[dddd]\n[MMMM Do]\n[h:mm:ss A]';
 
 let weatherData = null;
 
