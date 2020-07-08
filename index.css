@@ -13,25 +13,6 @@ body {
   overflow: hidden;
 }
 
-body.color {
-  animation: rainbow 60s infinite;
-}
-
-/* prettier-ignore */
-@keyframes rainbow {
-  0%   { background: hsl(0,   20%, 10%); }
-  10%  { background: hsl(36,  20%, 10%); }
-  20%  { background: hsl(72,  20%, 10%); }
-  30%  { background: hsl(108, 20%, 10%); }
-  40%  { background: hsl(144, 20%, 10%); }
-  50%  { background: hsl(180, 20%, 10%); }
-  60%  { background: hsl(216, 20%, 10%); }
-  70%  { background: hsl(252, 20%, 10%); }
-  80%  { background: hsl(288, 20%, 10%); }
-  90%  { background: hsl(324, 20%, 10%); }
-  100% { background: hsl(0,   20%, 10%); }
-}
-
 button {
   position: fixed;
   top: 0;

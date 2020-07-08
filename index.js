@@ -112,12 +112,12 @@ function fixClockSize(skipMoveWindow) {
 
 document.onkeydown = (e) => {
   if (document.activeElement !== input) {
-    if (e.key === 'c') {
-      e.preventDefault();
-      document.body.classList.toggle('color');
-      refreshClock();
+    // if (e.key === 'c') {
+    //   e.preventDefault();
+    //   document.body.classList.toggle('color');
+    //   refreshClock();
+    // }
     }
-  }
 
   if (e.keyCode === 27) {
     // Escape hides/shows the format field
