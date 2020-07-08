@@ -152,33 +152,62 @@ function refreshClock() {
   fixClockSize();
 }
 
-function reformat() {
-  const str = input.value;
-
-
-
-  let format = str.split(/[\[\]]/).map((item, i) => (i % 2 === 1) ? item : item === '' ? '' : `[${item}]`).join('').replace(/\\n/g, '\n');
-
-  // format = format.replace('Happy Birthday, David!', '<span class="rainbow-text">$&</span>');
-  format = format.replace(/\n/g, '<br>');
-
-  // temp = `${json.properties.periods[0].temperature} ${json.properties.periods[0].temperatureUnit} <img src="${json.properties.periods[0].icon}"><br>`;
-  // console.log(temp);
+function interpretWeatherString(str) {
+  if (!weatherData) return '[...]';
 
   const mapping = {
-    "n": "name",
-    "t": "temperature",
-    "tu": "temperatureUnit",
-    "tt": "temperatureTrend",
-    "ws": "windSpeed",
-    "wd": "windDirection",
-    "i": "icon",
-    "sf": "shortForecast",
-    "df": "detailedForecast",
+    "n": (prop) => prop["name"],
+    "tt": (prop) => prop["temperatureTrend"],
+    "tu": (prop) => prop["temperatureUnit"],
+    "t": (prop) => prop["temperature"],
+    "ws": (prop) => prop["windSpeed"],
+    "wd": (prop) => prop["windDirection"],
+    "i": (prop) => `<img src="${prop["icon"]}">`,
+    "sf": (prop) => prop["shortForecast"],
+    "df": (prop) => prop["detailedForecast"],
   };
 
+  const regex = new RegExp(Object.keys(mapping).join('|'), 'g');
+
+  return str.replace(regex, (str) => {
+    const fn = mapping[str];
+    return fn(weatherData.properties.periods[0]);
+  });
+}
+
+function reformat() {
+  const formatFns = {
+    text: (str) => str.replace(/\n/g, '<br>'),
+    time: (str) => moment().format(str),
+    weather: (str) => interpretWeatherString(str),
+  };
+
+  const str = input.value;
+  const pairs = ['}', ...str.split(/(\{|\}|\[|\])/)];
+  const chunks = [];
+  const modes = {
+    '[': 'time',
+    '{': 'weather',
+    ']': 'text',
+    '}': 'text',
+    'EOS': 'text',
+  };
+
+  for (let i = 0; i < pairs.length; i += 2) {
+    chunks.push({
+      type: modes[pairs[i]],
+      str: pairs[i + 1],
+    });
+  }
+
+  // format = format.replace('Happy Birthday, David!', '<span class="rainbow-text">$&</span>');
+
   formatter = () => {
-    return moment().format(format);
+    let html = '';
+    for (const { type, str } of chunks) {
+      html += formatFns[type](str);
+    }
+    return html;
   };
 
 }
