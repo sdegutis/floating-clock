@@ -10,7 +10,8 @@ const extras = document.getElementById('extras');
 
 input.value = localStorage.getItem('format') ?? '[dddd]\n[MMMM Do]\n[h:mm:ss A]';
 
-let weatherData = null;
+let hourlyWeatherData = null;
+let halfDailyWeatherData = null;
 
 let oldText;
 let formatter;
@@ -153,25 +154,25 @@ function refreshClock() {
 }
 
 function interpretWeatherString(str) {
-  if (!weatherData) return '[...]';
+  if (!hourlyWeatherData || !halfDailyWeatherData) return '[...]';
 
   const mapping = {
-    "n": (prop) => prop["name"],
-    "tt": (prop) => prop["temperatureTrend"],
-    "tu": (prop) => prop["temperatureUnit"],
-    "t": (prop) => prop["temperature"],
-    "ws": (prop) => prop["windSpeed"],
-    "wd": (prop) => prop["windDirection"],
-    "i": (prop) => `<img src="${prop["icon"]}">`,
-    "sf": (prop) => prop["shortForecast"],
-    "df": (prop) => prop["detailedForecast"],
+    "n": () => halfDailyWeatherData.properties.periods[0].name,
+    "tt": () => hourlyWeatherData.properties.periods[0].temperatureTrend,
+    "tu": () => hourlyWeatherData.properties.periods[0].temperatureUnit,
+    "t": () => hourlyWeatherData.properties.periods[0].temperature,
+    "ws": () => hourlyWeatherData.properties.periods[0].windSpeed,
+    "wd": () => hourlyWeatherData.properties.periods[0].windDirection,
+    "i": () => `<img src="${hourlyWeatherData.properties.periods[0].icon}">`,
+    "sf": () => hourlyWeatherData.properties.periods[0].shortForecast,
+    "df": () => halfDailyWeatherData.properties.periods[0].detailedForecast,
   };
 
   const regex = new RegExp(Object.keys(mapping).join('|'), 'g');
 
   return str.replace(regex, (str) => {
     const fn = mapping[str];
-    return fn(weatherData.properties.periods[0]);
+    return fn();
   });
 }
 
@@ -225,13 +226,19 @@ function fixTextareaSize() {
 }
 
 fetch('https://api.weather.gov/points/42.3194,-88.4461').then(r => r.json()).then(json => {
-  url = json.properties.forecastHourly;
+  const hourlyUrl = json.properties.forecastHourly;
+  const halfDailyUrl = json.properties.forecast;
 
   async function updateWeatherData() {
     console.log('refreshing weather data');
-    const result = await fetch(url);
-    weatherData = await result.json();
-    console.log(weatherData);
+
+    const hourlyResult = await fetch(hourlyUrl);
+    hourlyWeatherData = await hourlyResult.json();
+    console.log(hourlyWeatherData);
+
+    const halfDailyResult = await fetch(halfDailyUrl);
+    halfDailyWeatherData = await halfDailyResult.json();
+    console.log(halfDailyWeatherData);
   }
 
   updateWeatherData();
