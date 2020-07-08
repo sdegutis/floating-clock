@@ -154,6 +154,9 @@ function refreshClock() {
 
 function reformat() {
   const str = input.value;
+
+
+
   let format = str.split(/[\[\]]/).map((item, i) => (i % 2 === 1) ? item : item === '' ? '' : `[${item}]`).join('').replace(/\\n/g, '\n');
 
   // format = format.replace('Happy Birthday, David!', '<span class="rainbow-text">$&</span>');
@@ -192,14 +195,18 @@ function fixTextareaSize() {
   input.style.height = input.scrollHeight + 'px';
 }
 
-async function updateWeatherData() {
-  console.log('refreshing weather data');
-  const result = await fetch('https://api.weather.gov/gridpoints/LOT/46,91/forecast');
-  weatherData = await result.json();
-  console.log(weatherData);
-}
+fetch('https://api.weather.gov/points/42.3194,-88.4461').then(r => r.json()).then(json => {
+  url = json.properties.forecastHourly;
 
-updateWeatherData();
-setInterval(() => {
+  async function updateWeatherData() {
+    console.log('refreshing weather data');
+    const result = await fetch(url);
+    weatherData = await result.json();
+    console.log(weatherData);
+  }
+
   updateWeatherData();
-}, 1000 * 60 /* refresh every minute */);
+  setInterval(() => {
+    updateWeatherData();
+  }, 1000 * 60 /* refresh every minute */);
+});
