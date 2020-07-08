@@ -162,6 +162,18 @@ function reformat() {
   // temp = `${json.properties.periods[0].temperature} ${json.properties.periods[0].temperatureUnit} <img src="${json.properties.periods[0].icon}"><br>`;
   // console.log(temp);
 
+  const mapping = {
+    "n": "name",
+    "t": "temperature",
+    "tu": "temperatureUnit",
+    "tt": "temperatureTrend",
+    "ws": "windSpeed",
+    "wd": "windDirection",
+    "i": "icon",
+    "sf": "shortForecast",
+    "df": "detailedForecast",
+  };
+
   formatter = () => {
     return moment().format(format);
   };
