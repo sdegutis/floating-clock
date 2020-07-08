@@ -10,6 +10,8 @@ const extras = document.getElementById('extras');
 
 input.value = localStorage.getItem('format') ?? '[dddd]\\n[MMMM Do]\\n[h:mm:ss A]';
 
+let weatherData = null;
+
 let oldText;
 let formatter;
 let oldRect;
@@ -117,7 +119,7 @@ document.onkeydown = (e) => {
     //   document.body.classList.toggle('color');
     //   refreshClock();
     // }
-    }
+  }
 
   if (e.keyCode === 27) {
     // Escape hides/shows the format field
@@ -157,6 +159,9 @@ function reformat() {
   // format = format.replace('Happy Birthday, David!', '<span class="rainbow-text">$&</span>');
   format = format.replace(/\n/g, '<br>');
 
+  // temp = `${json.properties.periods[0].temperature} ${json.properties.periods[0].temperatureUnit} <img src="${json.properties.periods[0].icon}"><br>`;
+  // console.log(temp);
+
   formatter = () => {
     return moment().format(format);
   };
@@ -174,3 +179,15 @@ function fixTextareaSize() {
   input.style.height = '5px';
   input.style.height = input.scrollHeight + 'px';
 }
+
+async function updateWeatherData() {
+  console.log('refreshing weather data');
+  const result = await fetch('https://api.weather.gov/gridpoints/LOT/46,91/forecast');
+  weatherData = await result.json();
+  console.log(weatherData);
+}
+
+updateWeatherData();
+setInterval(() => {
+  updateWeatherData();
+}, 1000 * 60 /* refresh every minute */);
