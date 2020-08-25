@@ -87,3 +87,22 @@ th {
   -webkit-background-clip: text;
   color: transparent;
 }
+
+.sizer-1 {
+  font-size: 120%;
+}
+.sizer-2 {
+  font-size: 140%;
+}
+.sizer-3 {
+  font-size: 160%;
+}
+.sizer-4 {
+  font-size: 180%;
+}
+.sizer-5 {
+  font-size: 200%;
+}
+.sizer-6 {
+  font-size: 250%;
+}

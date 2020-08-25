@@ -195,9 +195,20 @@ function reformat() {
   };
 
   for (let i = 0; i < pairs.length; i += 2) {
+
+    let str = pairs[i + 1];
+    let sizer = str.match(/^\++/);
+    if (sizer) {
+      sizer = sizer[0];
+      str = str.substr(sizer.length);
+      sizer = sizer.length;
+      console.log(sizer);
+    }
+
     chunks.push({
+      sizer,
       type: modes[pairs[i]],
-      str: pairs[i + 1],
+      str,
     });
   }
 
@@ -205,8 +216,11 @@ function reformat() {
 
   formatter = () => {
     let html = '';
-    for (const { type, str } of chunks) {
-      html += formatFns[type](str);
+    for (const { type, str, sizer } of chunks) {
+      const sizing = str => sizer
+        ? `<span class='sizer-${sizer}'>${str}</span>`
+        : str;
+      html += sizing(formatFns[type](str));
     }
     return html;
   };
