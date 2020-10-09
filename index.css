@@ -104,5 +104,5 @@ th {
 .limit {
   display: block;
   white-space: initial;
-  width: 12em;
+  max-width: 12em;
 }
