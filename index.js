@@ -13,6 +13,7 @@ input.value = localStorage.getItem('format') ?? '[dddd]\n[MMMM Do]\n[h:mm:ss A]'
 let hourlyWeatherData = null;
 let halfDailyWeatherData = null;
 let feastsForToday = null;
+let feastCountryIndex = 46;
 
 let oldText;
 let formatter;
@@ -190,8 +191,14 @@ function interpretWeatherString(str) {
 function useRomcal(str) {
   if (!feastsForToday) return '<...>';
 
+  const country = Romcal.Countries[feastCountryIndex];
+
   const mapping = {
-    "fd": () => `<span class="limit">${feastsForToday.map(feast => feast.name).join('<br>')}</span>`,
+    "fd": () => `
+      <span class="change-feast-left">&larr;</span>
+      <span class="limit">${upperCaseCountry(country)}: ${feastsForToday.map(feast => feast.name).join('<br>')}</span>
+      <span class="change-feast-right">&rarr;</span>
+    `,
   };
 
   const regex = new RegExp(Object.keys(mapping).join('|'), 'g');
@@ -200,6 +207,29 @@ function useRomcal(str) {
     const fn = mapping[str];
     return fn();
   });
+}
+
+function upperCaseCountry(c) {
+  return (c.split(/([A-Z][a-z]+)/g)
+    .filter(s => s.length > 0)
+    .map(w => w[0].toUpperCase() + w.slice(1))
+    .join(' '));
+}
+
+window.addEventListener('click', (e) => {
+  if (e.target.className === 'change-feast-left') {
+    changeFeastDay(-1);
+  }
+  else if (e.target.className === 'change-feast-right') {
+    changeFeastDay(1);
+  }
+});
+
+function changeFeastDay(by) {
+  feastCountryIndex += by;
+  if (feastCountryIndex < 0) feastCountryIndex = Romcal.Countries.length - 1;
+  else if (feastCountryIndex === Romcal.Countries.length) feastCountryIndex = 0;
+  updateRomcalData();
 }
 
 function reformat() {
@@ -295,7 +325,10 @@ function updateRomcalData() {
   console.log('refreshing romcal data');
 
   // This is sync and takes about 1s to run.
-  feastsForToday = Romcal.calendarFor({ country: 'unitedStates' }, true).filter(date => date.moment.isSame(new Date(), 'day'));
+  const country = Romcal.Countries[feastCountryIndex];
+  feastsForToday = Romcal.calendarFor({ country }, true).filter(date => date.moment.isSame(new Date(), 'day'));
+
+  refreshClock();
 
   // Run every hour
   setInterval(updateRomcalData, 1000 * 60 * 60);
