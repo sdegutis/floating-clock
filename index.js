@@ -188,10 +188,18 @@ function interpretWeatherString(str) {
 }
 
 function useRomcal(str) {
-  return `<span class="limit">${feastsForToday
-    ? feastsForToday.map(feast => feast.name).join('<br>')
-    : '<...>'
-    }</span>`;
+  if (!feastsForToday) return '<...>';
+
+  const mapping = {
+    "fd": () => `<span class="limit">${feastsForToday.map(feast => feast.name).join('<br>')}</span>`,
+  };
+
+  const regex = new RegExp(Object.keys(mapping).join('|'), 'g');
+
+  return str.replace(regex, (str) => {
+    const fn = mapping[str];
+    return fn();
+  });
 }
 
 function reformat() {
