@@ -9,9 +9,14 @@ electron.app.whenReady().then(() => {
     frame: false,
     resizable: false,
     show: false,
+    webPreferences: {
+      preload: require('path').join(__dirname, 'preload.js'),
+    },
   });
 
-  // win.webContents.toggleDevTools();
+  electron.ipcMain.on('devtools', () => {
+    win.webContents.toggleDevTools();
+  });
 
   win.setMenu(null);
 

@@ -82,6 +82,16 @@ document.onmousewheel = (e) => {
 };
 
 
+// toggle devtools
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'F12') {
+    toggleDevTools();
+  }
+});
+
+
+
 // Auto sizing
 
 function fixClockSize(skipMoveWindow) {
