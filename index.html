@@ -4,11 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta content="default-src 'self' https://api.weather.gov; style-src 'self' 'nonce-clock'"
+  <!-- We literally only need unsafe-eval because of Romcal directly using lodash which needs Function for _.template which we don't use....... -->
+  <meta content="default-src 'self' 'unsafe-eval' https://api.weather.gov; style-src 'self' 'nonce-clock'"
     http-equiv="Content-Security-Policy">
   <title>Floating Clock</title>
   <link href="index.css" rel="stylesheet">
   <script src="./node_modules/moment/min/moment.min.js"></script>
+  <script src="./node_modules/romcal/dist/romcal.bundle.min.js"></script>
 </head>
 
 <body>

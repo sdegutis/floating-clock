@@ -88,21 +88,21 @@ th {
   color: transparent;
 }
 
-.sizer-1 {
-  font-size: 120%;
-}
-.sizer-2 {
-  font-size: 140%;
-}
-.sizer-3 {
-  font-size: 160%;
-}
-.sizer-4 {
-  font-size: 180%;
-}
-.sizer-5 {
-  font-size: 200%;
-}
-.sizer-6 {
-  font-size: 250%;
+/* prettier-ignore */
+.sizer-1 { font-size: 120%; }
+/* prettier-ignore */
+.sizer-2 { font-size: 140%; }
+/* prettier-ignore */
+.sizer-3 { font-size: 160%; }
+/* prettier-ignore */
+.sizer-4 { font-size: 180%; }
+/* prettier-ignore */
+.sizer-5 { font-size: 200%; }
+/* prettier-ignore */
+.sizer-6 { font-size: 250%; }
+
+.limit {
+  display: block;
+  white-space: initial;
+  width: 12em;
 }

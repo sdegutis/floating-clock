@@ -12,6 +12,7 @@ input.value = localStorage.getItem('format') ?? '[dddd]\n[MMMM Do]\n[h:mm:ss A]'
 
 let hourlyWeatherData = null;
 let halfDailyWeatherData = null;
+let feastsForToday = null;
 
 let oldText;
 let formatter;
@@ -164,8 +165,8 @@ function interpretWeatherString(str) {
     "ws": () => hourlyWeatherData.properties.periods[0].windSpeed,
     "wd": () => hourlyWeatherData.properties.periods[0].windDirection,
     "i": () => `<img src="${hourlyWeatherData.properties.periods[0].icon}">`,
-    "sf": () => hourlyWeatherData.properties.periods[0].shortForecast,
-    "df": () => halfDailyWeatherData.properties.periods[0].detailedForecast,
+    "sf": () => `<span class="limit">${hourlyWeatherData.properties.periods[0].shortForecast}</span>`,
+    "df": () => `<span class="limit">${halfDailyWeatherData.properties.periods[0].detailedForecast}</span>`,
   };
 
   const regex = new RegExp(Object.keys(mapping).join('|'), 'g');
@@ -176,21 +177,31 @@ function interpretWeatherString(str) {
   });
 }
 
+function useRomcal(str) {
+  return `<span class="limit">${feastsForToday
+    ? feastsForToday.map(feast => feast.name).join('<br>')
+    : '<...>'
+    }</span>`;
+}
+
 function reformat() {
   const formatFns = {
     text: (str) => str.replace(/\n/g, '<br>'),
     time: (str) => moment().format(str),
     weather: (str) => interpretWeatherString(str),
+    romcal: (str) => useRomcal(str),
   };
 
   const str = input.value;
-  const pairs = ['}', ...str.split(/(\{|\}|\[|\])/)];
+  const pairs = ['}', ...str.split(/(\{|\}|\[|\]|<|>)/)];
   const chunks = [];
   const modes = {
     '[': 'time',
     '{': 'weather',
+    '<': 'romcal',
     ']': 'text',
     '}': 'text',
+    '>': 'text',
     'EOS': 'text',
   };
 
@@ -260,3 +271,14 @@ fetch('https://api.weather.gov/points/42.3194,-88.4461').then(r => r.json()).the
     updateWeatherData();
   }, 1000 * 60 /* refresh every minute */);
 });
+
+function updateRomcalData() {
+  console.log('refreshing romcal data');
+
+  // This is sync and takes about 1s to run.
+  feastsForToday = Romcal.calendarFor({ country: 'unitedStates' }, true).filter(date => date.moment.isSame(new Date(), 'day'));
+
+  // Run every hour
+  setInterval(updateRomcalData, 1000 * 60 * 60);
+}
+updateRomcalData();
