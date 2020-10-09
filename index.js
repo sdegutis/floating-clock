@@ -73,7 +73,7 @@ document.onmousedown = (e) => {
 // Scroll to resize
 
 document.onmousewheel = (e) => {
-  if (e.target === clock) {
+  if (e.target.closest('#clock')) {
     const by = (e.deltaY > 0 ? -1 : 1) * 2;
     size += by;
     size = Math.max(size, 11);
