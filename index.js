@@ -19,7 +19,7 @@ let formatter;
 let oldRect;
 reformat();
 
-let size = 24;
+let size = 12;
 
 setupWindowsButtonColor();
 refreshClock();
@@ -235,6 +235,7 @@ function reformat() {
 
   // format = format.replace('Happy Birthday, David!', '<span class="rainbow-text">$&</span>');
 
+  console.log(chunks)
   formatter = () => {
     let html = '';
     for (const { type, str, sizer } of chunks) {

@@ -102,7 +102,7 @@ th {
 .sizer-6 { font-size: 280%; }
 
 .limit {
-  display: block;
+  display: inline-block;
   white-space: initial;
   max-width: 12em;
 }
