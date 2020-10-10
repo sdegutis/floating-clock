@@ -195,9 +195,11 @@ function useRomcal(str) {
 
   const mapping = {
     "fd": () => `
-      <span class="change-feast-left">&larr;</span>
+      [
+        <span class="change-feast-left">&larr;</span>
+        <span class="change-feast-right">&rarr;</span>
+      ]
       <span class="limit">${upperCaseCountry(country)}: ${feastsForToday.map(feast => feast.name).join('<br>')}</span>
-      <span class="change-feast-right">&rarr;</span>
     `,
   };
 
