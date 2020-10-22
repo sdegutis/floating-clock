@@ -34,7 +34,7 @@ button#closeButton:active {
   display: inline-block;
   padding: 0.75em 1em;
   color: white;
-  max-width: 18em;
+  /* max-width: 18em; */
   user-select: none;
   font-size: 32px;
   white-space: nowrap;
@@ -104,4 +104,5 @@ th {
 
 .limit {
   white-space: initial;
+  max-width: 1em;
 }

@@ -157,6 +157,10 @@ function refreshClock() {
     oldText = newTime;
     clock.innerHTML = newTime;
 
+    for (const node of document.querySelectorAll('[data-width]')) {
+      node.style.maxWidth = node.dataset.width;
+    }
+
     // for (const el of clock.getElementsByTagName('span')) {
     //   el.style.color = el.dataset['color'];
     // }
@@ -176,8 +180,8 @@ function interpretWeatherString(str) {
     "ws": () => hourlyWeatherData.properties.periods[0].windSpeed,
     "wd": () => hourlyWeatherData.properties.periods[0].windDirection,
     "i": () => `<img src="${hourlyWeatherData.properties.periods[0].icon}">`,
-    "sf": () => `<span class="limit">${hourlyWeatherData.properties.periods[0].shortForecast}</span>`,
-    "df": () => `<span class="limit">${halfDailyWeatherData.properties.periods[0].detailedForecast}</span>`,
+    "sf": () => hourlyWeatherData.properties.periods[0].shortForecast,
+    "df": () => halfDailyWeatherData.properties.periods[0].detailedForecast,
   };
 
   const regex = new RegExp(Object.keys(mapping).join('|'), 'g');
@@ -189,7 +193,7 @@ function interpretWeatherString(str) {
 }
 
 function useRomcal(str) {
-  if (!feastsForToday) return '<...>';
+  if (!feastsForToday) return '&lt;...&gt;';
 
   const country = Romcal.Countries[feastCountryIndex];
 
@@ -198,9 +202,8 @@ function useRomcal(str) {
       [
         <span class="change-feast-left">&larr;</span>
         <span class="change-feast-right">&rarr;</span>
-      ]
-      <span class="limit">${upperCaseCountry(country)}: ${feastsForToday.map(feast => feast.name).join('<br>')}</span>
-    `,
+      ]`.replace(/\n| {2,}/g, '') +
+      `${upperCaseCountry(country)}: ${feastsForToday.map(feast => feast.name).join('\n')}`,
   };
 
   const regex = new RegExp(Object.keys(mapping).join('|'), 'g');
@@ -284,7 +287,10 @@ function reformat() {
         : str;
       html += sizing(formatFns[type](str));
     }
-    return html;
+    console.log(html);
+    return (html
+      .replace(/\n/g, '<br>')
+      .replace(/%(\d+)%(.+?)%%/g, '<span data-width="$1em" class="limit">$2</span>'));
   };
 
 }
