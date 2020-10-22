@@ -166,7 +166,7 @@ function refreshClock() {
 }
 
 function interpretWeatherString(str) {
-  if (!hourlyWeatherData || !halfDailyWeatherData) return '[...]';
+  if (!hourlyWeatherData || !hourlyWeatherData.properties || !halfDailyWeatherData) return '[...]';
 
   const mapping = {
     "n": () => halfDailyWeatherData.properties.periods[0].name,
@@ -331,8 +331,8 @@ function updateRomcalData() {
   feastsForToday = Romcal.calendarFor({ country }, true).filter(date => date.moment.isSame(new Date(), 'day'));
 
   refreshClock();
-
-  // Run every hour
-  setInterval(updateRomcalData, 1000 * 60 * 60);
 }
+
+// Run every hour
+setInterval(updateRomcalData, 1000 * 60 * 60);
 updateRomcalData();
