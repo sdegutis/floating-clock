@@ -161,6 +161,10 @@ function refreshClock() {
       node.style.maxWidth = node.dataset.width;
     }
 
+    for (const node of document.querySelectorAll('[data-size]')) {
+      node.style.fontSize = (130 + (node.dataset.size * 30)) + '%';
+    }
+
     // for (const el of clock.getElementsByTagName('span')) {
     //   el.style.color = el.dataset['color'];
     // }
@@ -283,7 +287,7 @@ function reformat() {
     let html = '';
     for (const { type, str, sizer } of chunks) {
       const sizing = str => sizer
-        ? `<span class='sizer-${sizer}'>${str}</span>`
+        ? `<span data-size="${sizer}">${str}</span>`
         : str;
       html += sizing(formatFns[type](str));
     }
