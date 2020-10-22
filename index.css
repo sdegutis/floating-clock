@@ -34,8 +34,9 @@ button#closeButton:active {
   display: inline-block;
   padding: 0.75em 1em;
   color: white;
-  /* max-width: 18em; */
+  /* transition: font-size 100ms ease-in-out; */
   user-select: none;
+  max-width: 24em;
   font-size: 32px;
   white-space: nowrap;
 }
@@ -88,19 +89,6 @@ th {
   -webkit-background-clip: text;
   color: transparent;
 }
-
-/* prettier-ignore */
-.sizer-1 { font-size: 130%; }
-/* prettier-ignore */
-.sizer-2 { font-size: 160%; }
-/* prettier-ignore */
-.sizer-3 { font-size: 190%; }
-/* prettier-ignore */
-.sizer-4 { font-size: 220%; }
-/* prettier-ignore */
-.sizer-5 { font-size: 250%; }
-/* prettier-ignore */
-.sizer-6 { font-size: 280%; }
 
 .limit {
   white-space: initial;

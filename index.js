@@ -102,6 +102,8 @@ function fixClockSize(skipMoveWindow) {
     return;
   }
 
+  // window.resizeTo(2, oldRect.height + 2);
+
   clock.style.fontSize = size + 'pt';
   const rect = clock.getBoundingClientRect();
 
@@ -207,7 +209,7 @@ function useRomcal(str) {
         <span class="change-feast-left">&larr;</span>
         <span class="change-feast-right">&rarr;</span>
       ]`.replace(/\n| {2,}/g, '') +
-      `${upperCaseCountry(country)}: ${feastsForToday.map(feast => feast.name).join('\n')}`,
+      ` ${upperCaseCountry(country)}: ${feastsForToday.map(feast => feast.name).join('\n')}`,
   };
 
   const regex = new RegExp(Object.keys(mapping).join('|'), 'g');
@@ -270,7 +272,6 @@ function reformat() {
       sizer = sizer[0];
       str = str.substr(sizer.length);
       sizer = sizer.length;
-      console.log(sizer);
     }
 
     chunks.push({
@@ -291,7 +292,6 @@ function reformat() {
         : str;
       html += sizing(formatFns[type](str));
     }
-    console.log(html);
     return (html
       .replace(/\n/g, '<br>')
       .replace(/%(\d+)%(.+?)%%/g, '<span data-width="$1em" class="limit">$2</span>'));
