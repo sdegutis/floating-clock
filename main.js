@@ -4,6 +4,7 @@ electron.app.whenReady().then(() => {
   let win = new electron.BrowserWindow({
     width: 171,
     height: 97,
+    opacity: 0.75,
     alwaysOnTop: true,
     backgroundColor: '#0a0a0a',
     frame: false,

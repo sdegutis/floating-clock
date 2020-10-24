@@ -36,7 +36,7 @@ button#closeButton:active {
   color: white;
   /* transition: font-size 100ms ease-in-out; */
   user-select: none;
-  max-width: 24em;
+  max-width: 16em;
   font-size: 32px;
   white-space: nowrap;
 }
